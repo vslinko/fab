@@ -1,0 +1,14 @@
+[global]
+pid = /var/run/php5-fpm.pid
+error_log = /var/log/php5-fpm.log
+
+[www-data]
+listen = /var/run/php5-fpm.sock
+user = www-data
+group = www-data
+pm = dynamic
+pm.max_children = {{ max_children|default(32) }}
+pm.start_servers = {{ start_servers|default(8) }}
+pm.min_spare_servers = {{ min_spare_servers|default(4) }}
+pm.max_spare_servers = {{ max_spare_servers|default(16) }}
+pm.max_requests = {{ max_requests|default(1024) }}
