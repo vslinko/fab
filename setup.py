@@ -102,3 +102,30 @@ def nginx(template, package="light", **kwargs):
 
     # restart with new configuration
     sudo("service nginx restart")
+
+
+def redis():
+    sudo("aptitude install -y redis-server")
+
+
+def mongo():
+    sudo("aptitude install -y mongodb")
+
+
+def nodejs():
+    sudo("aptitude install -y python g++ make")
+    run("mkdir nodejs")
+
+    with cd("nodejs"):
+        run("wget -N http://nodejs.org/dist/node-latest.tar.gz")
+        run("tar xzvf node-latest.tar.gz")
+
+        with cd(run("ls -rd node-v*")):
+            run("./configure")
+            sudo("make install")
+
+    sudo("rm -r nodejs")
+
+
+def npm(package):
+    run("npm install %s" % package)

@@ -18,3 +18,30 @@ def staging():
     setup.www_data()
     setup.php(["apc", "curl", "fpm", "gd", "intl", "mcrypt", "mysql", "pgsql", "sqlite"])
     setup.nginx("staging")
+
+
+@fabric.api.task
+@fabric.api.hosts("happynewgift.rithis.com")
+def happynewgift():
+    """
+    server for happynewgift.ru staging server
+    """
+#    setup.debian()
+#    setup.redis()
+#    setup.mongo()
+    setup.nodejs()
+
+@fabric.api.task
+@fabric.api.hosts("happynewgift.rithis.com")
+def happynewgift_deploy():
+    from fabric.api import run, sudo, cd
+
+    sudo("sv stop frontend")
+    sudo("sv stop backend")
+
+    with cd("happynewgift"):
+        run("git pull")
+        run("npm install")
+
+    sudo("sv start backend")
+    sudo("sv start frontend")
